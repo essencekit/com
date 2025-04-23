@@ -1,3 +1,4 @@
-/dev/index/          /
-/dev/docs            /docs
-/dev/bless           /bless
+/       /dev/index     200
+/docs   /dev/docs      200
+/bless  /dev/bless     200
+/*      /dev/:splat    200
