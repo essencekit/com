@@ -1,0 +1,79 @@
+<style>
+    section {
+        margin: 2.5rem 0;
+    }
+
+    .sol-card {
+        border-radius: 14px;
+        max-width: 26rem;
+    }
+    .sol-address {
+        font-family: monospace;
+        word-break: break-all;
+        margin: 0.5rem 0 1rem;
+        font-size: 0.95rem;
+        background-color: var(--code-bg);
+        color: var(--code-color);
+        border-radius: 6px;
+        overflow-x: auto;
+        cursor: pointer;
+        user-select: text;
+        transition: background-color 0.6s ease;
+        text-align: center;
+        position: relative;
+    }
+
+    .sol-address:hover {
+        background-color: color-mix(in srgb, var(--code-bg), var(--text-color) 8%);
+    }
+
+    .sol-address.copied{
+        background-color:var(--code-flash);
+    }
+
+    .roadmap {
+        max-width: 38rem;
+        line-height: 1.55;
+    }
+    .roadmap a {
+        color: var(--link-color);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .roadmap a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<script src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"></script>
+<script>
+    kofiwidget2.init('Support me on Ko-fi', '#569aff', 'T6T11DK4OG');
+    kofiwidget2.draw();
+</script>
+
+<section class="sol-card">
+    <h2>Donate with any Solana token</h2>
+    <div class="sol-address" id="solAddr">81zXpRCxszRaX4TvMxEq7eTHuiNEgX8BECN4gAV8SEtd</div>
+</section>
+
+<section class="roadmap">
+    <h2>Roadmap</h2>
+    <p>
+        You can view, contribute to, and vote on our roadmap over on
+        <a
+            href="https://github.com/essencekit/essencekit/issues"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+        >.
+    </p>
+    <p>
+        We’d love ❤ to hear your suggestions for improvements — please jump in
+        with ideas or PRs!
+    </p>
+</section>
+
+<script type="module">
+    import { enableCopyOnCodeBlocks } from "@ASSETS@/utils/copy.js";
+    enableCopyOnCodeBlocks('#solAddr'); 
+</script>

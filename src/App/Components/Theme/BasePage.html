@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="@[description]" />
+        <link rel="icon" href="@ASSETS@/images/favico.png">
+        <title>@[title]</title>
+    </head>
+
+    <script type="module">
+        import '@ASSETS@/utils/globalState.js';
+    </script>
+
+    <body>
+        @{Style}
+
+        @[content]
+
+        @{Navigation}
+    </body>
+</html>

@@ -1,0 +1,144 @@
+<style>
+    :root {
+        --nav-width: 260px;
+        --nav-bg: #181818;
+        --nav-link-hover: #3a3a3a;
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --nav-bg: #ffffff;
+            --nav-link-hover: #e2e2e2;
+        }
+
+        .hamburger {
+            background: #000;
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.25);
+        }
+    }
+
+    /* ────────────────────────────────────────────────────────────
+       Fixed / sticky side‑navigation (desktop default)
+    ──────────────────────────────────────────────────────────── */
+    .side-nav {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: var(--nav-width);
+        height: 100vh;
+        padding: 1.25rem 1rem;
+        background: var(--nav-bg);
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        z-index: 1000;
+    }
+
+    .side-nav a {
+        color: inherit;
+        text-decoration: none;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.4rem;
+        transition: background 0.25s;
+    }
+    .side-nav a:hover {
+        background: var(--nav-link-hover);
+    }
+
+    /* ────────────── Hamburger button (hidden on desktop) */
+    .hamburger {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: none;
+        background: #ffffff;
+        color: #0e0e0e;
+        font: 700 1.5rem/48px monospace;
+        padding: 0;
+        cursor: pointer;
+        display: none; /* show via media‑query */
+        z-index: 1001;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ────────────── Transparent overlay for easy close */
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s;
+        z-index: 999;
+    }
+
+    .overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .side-nav {
+        transform: translateX(100%); /* start off‑screen */
+    }
+    .side-nav.open {
+        transform: translateX(0);
+    }
+</style>
+
+<!-- navigation -->
+<nav class="side-nav" id="sideNav">
+    <a href="/">Home</a>
+    <a href="/docs">Docs</a>
+    <a href="/bless">Bless</a>
+    <a href="https://github.com/essencekit/essencekit">GitHub</a>
+</nav>
+
+<!-- overlay for click‑away close on mobile -->
+<div class="overlay" id="overlay"></div>
+
+<!-- hamburger → appears only on mobile -->
+<button class="hamburger" id="hamburger" aria-label="Open navigation">☰</button>
+
+<script>
+    (function () {
+        const nav = document.getElementById('sideNav');
+        const burger = document.getElementById('hamburger');
+        const overlay = document.getElementById('overlay');
+
+        const openNav = () => {
+            nav.classList.add('open');
+            overlay.classList.add('show');
+            burger.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeNav = () => {
+            nav.classList.remove('open');
+            overlay.classList.remove('show');
+            burger.setAttribute('aria-expanded', 'false');
+        };
+
+        const toggleNav = () =>
+            nav.classList.contains('open') ? closeNav() : openNav();
+
+        burger.addEventListener('click', toggleNav);
+        overlay.addEventListener('click', closeNav);
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) closeNav();
+        });
+    })();
+</script>

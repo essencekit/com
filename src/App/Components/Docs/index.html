@@ -1,0 +1,598 @@
+<style>
+    h1, h2 { margin-top: 2.2rem; }
+    code   { font-family: monospace; }
+    hr {
+        border:0;border-top:1px solid #444;
+        margin-block:2.5rem;
+    }
+
+    pre, code {
+        overflow-x: auto;
+    }
+
+    pre, ul  { margin-block: 1.25rem; }
+
+    pre { 
+        overflow:auto; 
+        margin:1.25rem 0; 
+    }
+    pre > code {
+        position: relative;
+        display: block;
+        padding: 1rem;
+    }
+
+    code {
+        background-color: var(--code-bg);
+        color: var(--code-color);
+        border-radius: 6px;
+        overflow-x: auto;
+        cursor: pointer;
+        font-family: monospace;
+        user-select: text;
+        transition: background-color 0.6s ease;
+    }
+
+    code:hover {
+        background-color: color-mix(in srgb, var(--code-bg), var(--text-color) 8%);
+    }
+
+    pre > code.copied{
+        background-color:var(--code-flash);
+    }
+
+    pre > code.copied::after {
+        content: 'Copied!';
+        position: absolute;
+        right: .75rem;
+        bottom: .5rem;
+        font-size: .75rem;
+        opacity: .85;
+        pointer-events: none;
+    }
+
+    .formula       { margin: 0 0 1.25rem; line-height: 1.45; }
+    .formula       { border-left: .25rem solid var(--accent); padding-left: .75rem; }
+    .formula .op   { display:inline-block; width:1.25rem; text-align:center; }
+
+    .accent        { color: var(--accent); font-weight:700; }
+
+    .side-nav a.sub-link {
+        font-size: 0.875rem;
+        padding-left: 1.5rem;
+        opacity: 0.85;
+    }
+    .side-nav a.sub-link.active {
+        background: var(--nav-link-hover);
+        opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+        pre code { line-height: 1.6; }
+    }
+
+    @media (max-width: 480px){ 
+        pre code{ font-size: 0.85rem; } 
+    }
+</style>
+
+<main>
+    <h1>docs v0.1</h1>
+
+    <hr />
+
+    <h2 id="magic-formula">Magic Formula</h2>
+
+    <p class="formula">
+        <span class="op">+</span> Simplicity of plain HTML, JS, CSS<br>
+        <span class="op">+</span> Flexibility of modular components<br>
+        <span class="op">+</span> Stability of precompiled languages<br>
+        <span class="op">=</span> <span class="accent">MAGIC.</span>
+    </p>
+
+    <p>essencekit turns pure creativity into precise reality.</p>
+
+    <hr />
+
+    <h2 id="installation">Installation</h2>
+
+    <h3>Prerequisites</h3>
+
+    <p>Ensure your system has:</p>
+    <ul>
+    <li>Node.js</li>
+    <li>npm</li>
+    <li>git</li>
+    </ul>
+
+    <h3>Quick Start</h3>
+
+    <pre>
+<code class="language-bash">git clone git@github.com:essencekit/essencekit.git
+cd essencekit
+npm install &amp;&amp; npm link
+
+essencekit build</code></pre>
+
+    <p>Your generated site will appear in the Pub folder.</p>
+
+    <hr />
+
+    <h2 id="directory-structure">Directory Structure</h2>
+    <ul>
+    <li><strong>App</strong> → Application files: components, overrides, global config</li>
+    <li><strong>Core</strong> → The heart of the project</li>
+    <li><strong>Pub</strong> → Rendered static files per environment</li>
+    </ul>
+
+    <hr />
+
+    <h2 id="component-system">Component System</h2>
+
+    <p>To create a component, simply add a new folder and HTML file under <code>App/Components</code>. Each component can have unlimited sub‑components.</p>
+
+    <h3>Component structure example:</h3>
+
+    <pre><code>App/
+    └── Components/
+        └── SomeComponent/
+            ├── SubComponent/
+            │   └── OneMoreComponent.html
+            ├── SomeComponent.html
+            ├── AnotherComponent.html
+            └── config.json</code></pre>
+
+    <p>Components can extend others by specifying a parent in <a href="#component-config">config.json</a>.</p>
+
+    <hr />
+
+    <h2 id="state">State</h2>
+
+    <p>essencekit provides simple state management for handling both global and local states easily.</p>
+
+    <h3>Global State Example</h3>
+
+    <p>A minimal global state for theme switching:</p>
+
+    <pre><code class="language-html">&lt;button id="toggle-theme"&gt;Toggle Theme&lt;/button&gt;
+
+&lt;script&gt;
+    window.addEventListener('globalStateReady', () =&gt; {
+        document.getElementById('toggle-theme').onclick = () =&gt; {
+            const newTheme = globalState.getState().theme === 'dark' ? 'light' : 'dark';
+            globalState.setState({ theme: newTheme });
+            document.body.setAttribute('data-theme', newTheme);
+        };
+    });
+&lt;/script&gt;</code></pre>
+
+    <h3>Local State Example</h3>
+
+    <p>Local state for managing interactive elements:</p>
+
+    <pre><code class="language-html">&lt;form id="chat-form"&gt;
+    &lt;input name="prompt" placeholder="Your message..." /&gt;
+    &lt;button type="submit"&gt;Send&lt;/button&gt;
+&lt;/form&gt;
+&lt;div id="response"&gt;&lt;/div&gt;
+
+&lt;script type="module"&gt;
+        import State from '@ASSETS@/State/Manager.js';
+
+        const chatForm = document.getElementById('chat-form');
+        const chatState = new State({ messages: [] });
+
+        chatForm.onsubmit = (e) =&gt; {
+            e.preventDefault();
+            const prompt = e.target.prompt.value;
+
+            chatState.setState({
+                messages: [...chatState.getState().messages, prompt],
+            });
+
+            document.getElementById('response').innerText = 'Sent: ' + prompt;
+            e.target.prompt.value = '';
+        };
+&lt;/script&gt;</code></pre>
+
+    <h3>Preserving State Across Pages</h3>
+
+    <p>You can persist state using <code>localStorage</code>, ensuring state continuity between page loads:</p>
+
+    <pre><code class="language-javascript">// Saving state to localStorage
+localStorage.setItem('chatMessages', JSON.stringify(chatState.getState().messages));
+
+// Loading state from localStorage
+const savedMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+const chatState = new State({ messages: savedMessages });</code></pre>
+
+    <p>Use these minimal states to keep interactions clear, responsive, and maintainable.</p>
+
+    <hr />
+
+    <h2 id="template-engine">Template Engine</h2>
+
+    <p><strong>1. Call a component</strong> – pass it whatever data you need</p>
+    <pre><code>@{SomeComponent, {"someKey": "data"}}</code></pre>
+
+    <p><strong>2. Inside&nbsp;<code>SomeComponent</code></strong> you can access that key (or any config value) with:</p>
+    <pre><code>@[someKey]</code></pre>
+
+    <p><strong>3. Chain another component</strong> – a component can invoke another component the same way:</p>
+    <pre><code>@{AnotherComponent}</code></pre>
+
+    <p>Conditional &amp; loops:</p>
+
+    <pre><code>@if(some.condition)
+    ...
+@else
+    ...
+@endif
+
+@each(item in some.list)
+    ...
+@end</code></pre>
+
+    <hr />
+
+    <h2 id="project-lifecycle">Project Lifecycle</h2>
+
+    <p>To build and deploy your essencekit site, run:</p>
+
+    <pre><code>essencekit build</code></pre>
+
+    <p>This compiles and outputs the generated website into the <code>Pub/dev</code> folder by default.</p>
+
+    <h3>Namespaces and Strict Mode</h3>
+
+    <p>To deploy with specific configurations, use namespaces (like <code>prod</code>):</p>
+
+    <pre><code>essencekit build prod</code></pre>
+
+    <p>Using the <code>prod</code> namespace activates <strong>strict mode</strong>, preventing deployments with <a href="#rules">rule violations</a>. The build will halt on errors, ensuring your production environment remains stable.</p>
+
+    <p>Custom <a href="#post-process">post‑processing</a> is supported. Minification is enabled by default.</p>
+
+    <p>The final result is a fully static site composed of HTML, JS, and CSS.</p>
+
+    <hr />
+
+    <h2 id="rules">Rules</h2>
+
+    <p>Rules in essencekit ensure best practices, consistency, and stability across your project. Rules are defined under the <code>App/Rules</code> directory and configured within your <code>App/config.json</code>:</p>
+
+    <h3>Configuration Example (<code>App/config.json</code>):</h3>
+
+    <pre><code class="language-json">{
+    "rules": {
+        "enabled": true,
+        "strict": true,
+        "sources": [
+            "Rules/customRules.js"
+        ]
+    }
+}</code></pre>
+
+    <h3>Rule Definition Example (<code>App/Rules/customRules.js</code>):</h3>
+
+    <pre><code class="language-javascript">export default [
+    {
+        name: 'title-required',
+        description: 'Component config must have a title.',
+        check(html, component) {
+            if (!component?.config?.title) {
+                return `Missing title in component: ${component.name}`;
+            }
+        }
+    }
+];</code></pre>
+
+    <p>Each rule consists of:</p>
+    <ul>
+    <li><strong>name</strong>: Short identifier for the rule.</li>
+    <li><strong>description</strong>: Explanation of the rule’s purpose.</li>
+    <li><strong>check</strong>: Function to validate the rule; returns an error message when conditions fail.</li>
+    </ul>
+
+    <p>Use strict mode to enforce compliance during production builds, keeping your deployments safe and consistent. </p>
+    <p>You can skip rules entirely if they're not needed for your project.</p>
+
+    <hr />
+
+    <h2 id="post-process">PostProcess</h2>
+
+    <p>Post‑processing in essencekit optimizes the final HTML output. Minification is enabled by default, but you can add custom steps as needed.</p>
+
+    <p>Post‑processors live under <code>App/PostProcess</code> and are configured in <code>App/config.json</code>.</p>
+
+    <h3>Configuration Example (<code>App/config.json</code>):</h3>
+
+    <pre><code class="language-json">{
+    "postProcess": {
+        "enabled": true,
+        "sources": [
+            "PostProcess/smila.js"
+        ]
+    }
+}</code></pre>
+
+    <h3>PostProcessor Example (<code>App/PostProcess/smila.js</code>):</h3>
+
+    <pre><code class="language-javascript">export default function (html) {
+    // Insert a smiley just before the closing tag
+    return html.replace('&lt;/body&gt;', '😊&lt;/body&gt;');
+}</code></pre>
+
+    <p>Use post‑processors to keep your builds clean, performant, and optimized for production.</p>
+
+    <hr />
+
+    <h2 id="playground">Playground</h2>
+
+    <p>Explore essencekit features with examples in the <a href="https://github.com/essencekit/essencekit">repository's</a> <code>App</code> folder. Deploy and test freely.</p>
+
+    <hr />
+
+    <h2 id="configuation-levels">Configuration Levels</h2>
+
+    <p>Configurations hierarchy:</p>
+    <ul>
+    <li><code>.env</code> → API keys</li>
+    <li><code>App/config.json</code> → Global settings</li>
+    <li>Component <code>config.json</code> → Scoped settings</li>
+    </ul>
+
+    <hr />
+
+    <h2 id="env">.env Configuration</h2>
+
+    <p>Set API keys here. Copy <code>.env.example</code> to <code>.env</code> to start configuring your API keys.</p>
+
+    <hr />
+
+    <h2 id="global-config">Global Config</h2>
+
+    <h3>Example (<code>App/config.json</code>):</h3>
+
+    <pre><code class="language-json">{
+    "rules": {
+        "enabled": true,
+        "strict": true,
+        "sources": [
+            "essencekit-rules-basic",
+            "Rules/customRules.js",
+            "Rules/htmlLintRules.js"
+        ]
+    },
+    "auth": {
+        "endpoint": "http://localhost:3000/api/auth/login"
+    },
+    "apiGroups": {
+        "main": "https://jsonplaceholder.typicode.com",
+        "openai": "https://api.openai.com/v1"
+    },
+    "apiAuth": {
+        "openai": {
+            "type": "Bearer",
+            "token": "OPENAI_KEY"
+        }
+    }
+}</code></pre>
+
+    <hr />
+
+    <h2 id="component-config">Component Config</h2>
+
+    <h3>Example (<code>App/Components/Index/config.json</code>):</h3>
+
+    <pre><code class="language-json">{
+    "extends": "BasePage",
+    "title": "essencekit Home Page",
+    "description": "Minimalist web framework focused on speed, simplicity, and fun.",
+    "render": true,
+    "auth": true,
+    "api": [
+        {
+            "dataGroup": "main",
+            "dataSource": "/posts",
+            "postType": true,
+            "postName": "sendPost"
+        }
+    ]
+}</code></pre>
+
+    <p>Only components with <code>render: true</code> are rendered. It is possible to skip <code>config.json</code> altogether and simply call the component from another component.</p>
+
+    <hr />
+
+    <h2 id="api-system">API System</h2>
+
+    <h3>Global Configuration</h3>
+
+    <p>Define your APIs in the global configuration file: <strong><a href="#global-config">App/config.json</a></strong></p>
+
+    <pre><code class="language-json">{
+    "apiGroups": {
+        "openai": "https://api.openai.com/v1",
+        "main": "https://jsonplaceholder.typicode.com"
+    },
+    "apiAuth": {
+        "openai": {
+            "type": "Bearer",
+            "token": "OPENAI_KEY"
+        }
+    }
+}</code></pre>
+
+    <h3>Component Configuration</h3>
+
+    <p>Use APIs within your components by defining them in your <a href="#component-config">component config</a>:</p>
+
+    <h4>GET Example</h4>
+
+    <pre><code class="language-json">{
+    "api": [
+        {
+            "dataGroup": "main",
+            "dataSource": "/posts",
+            "getType": "static",
+            "injectAs": "posts"
+        }
+    ]
+}</code></pre>
+
+    <p>Template Usage:</p>
+
+    <pre><code class="language-html">@if(posts.length)
+    &lt;ul&gt;
+        @each(post in posts)
+        &lt;li&gt;@[post.title]&lt;/li&gt;
+        @end
+    &lt;/ul&gt;
+@else
+    &lt;p&gt;No posts available.&lt;/p&gt;
+@endif</code></pre>
+
+    <h4>POST Example</h4>
+
+    <p>Define the POST endpoint in your component config:</p>
+
+    <pre><code class="language-json">{
+    "extends": "BasePage",
+    "title": "essencekit Home Page",
+    "description": "essencekit is a minimalist web framework focused on speed, simplicity, and fun.",
+    "render": true,
+    "auth": true,
+    "api": [
+        {
+            "dataGroup": "main",
+            "dataSource": "/posts",
+            "postType": true,
+            "postName": "sendBlessing"
+        }
+    ]
+}</code></pre>
+
+    <p>Template usage with a form:</p>
+
+    <pre>
+<code class="language-html">&lt;form onsubmit="essenceAPI.sendBlessing({
+    title: this.title.value,
+    message: this.message.value,
+    userId: 1}).then(res =&gt; console.log('✅ Sent:', res)); return false;"&gt;
+        &lt;input name="title" placeholder="Type a title..." /&gt;
+        &lt;input name="message" placeholder="Type a blessing..." /&gt;
+        &lt;button type="submit"&gt;Bless essencekit&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+    <h4>Future Implementation</h4>
+
+    <p>Currently, only <code>getType: "static"</code> is implemented.</p>
+    <p>Soon, <code>getType: "dynamic"</code> will allow personalized refetching of data upon reload or after a defined expiration period without needing to redeploy the application.</p>
+
+    <hr />
+
+    <h2 id="naming-conventions">Naming Conventions</h2>
+
+    <ul>
+    <li><strong>Classes:</strong> UpperCamelCase (<code>Renderer</code>)</li>
+    <li><strong>Functions/Utilities:</strong> lowerCamelCase (<code>generateClientPost</code>)</li>
+    </ul>
+
+    <hr />
+
+    <h2 id="monorepo">Monorepo as Launchpad</h2>
+
+    <p>The entire essencekit ecosystem begins in a unified monorepo — a springboard for rapid development, seamless iteration, and tight integration. This setup accelerates early momentum and simplifies contributions.  
+    As the project evolves, the community will vote on whether to keep it unified or modularize into separate packages. The structure adapts to growth — not the other way around.</p>
+
+    <hr />
+
+    <h2 id="routing">Routing</h2>
+
+    <p>essencekit doesn't include built‑in routing, giving you full control to integrate your server’s rewrite rules. A dedicated router package might come later.</p>
+
+    <hr />
+
+    <h2 id="overriding">Overriding Principle</h2>
+
+    <p>essencekit allows overriding core classes effortlessly: simply mirror the class path inside the App folder and modify imports. Maintain the same namespace but use your custom logic.</p>
+
+    <p>Example:</p>
+
+    <pre><code>Original:
+Core/Compiler/Renderer.js
+
+Override:
+App/Compiler/Renderer.js</code></pre>
+
+    <p>Currently, only the Renderer class is override‑ready. More extensibility options are on the way.</p>
+
+    <hr />
+
+    <h2 id="auth">Authentication Demo</h2>
+
+    <p>To test authentication with the Auth component, set up the demo auth server — or use your own.</p>
+
+    <ul>
+    <li>Next.js auth demo: <a href="https://github.com/essencekit/auth-demo">essencekit-auth-demo</a></li>
+    <li>Follow repo README for setup instructions.</li>
+    </ul>
+
+    <hr />
+
+    <h2 id="ai">AI Workflows <em>(Coming Soon)</em></h2>
+
+    <p>Stay tuned for AI‑driven workflows.</p>
+
+    <hr />
+
+    <h2 id="philosophy">Philosophy &amp; Community</h2>
+
+    <p>essencekit is community‑driven:</p>
+    <ul>
+    <li>Documentation is a knowledge base, not just a manual.</li>
+    <li>Everyone is encouraged to share solutions and best practices.</li>
+    <li>Your input shapes essencekit’s evolution.</li>
+    </ul>
+
+    <p>Check and contribute to essencekit’s future: <a href="https://github.com/essencekit/essencekit/issues">GitHub Issues</a></p>
+
+    <p>Contact us through our social networks for support.</p>
+
+    <hr />
+
+    <h2 id="thing">And One More Thing...</h2>
+
+    <p>All documentation is a suggestion, not a rulebook.</p>
+    <p>Experiment, explore, and share your insights on <a href="https://x.com/essence_kit">Twitter</a>, <a href="https://reddit.com/r/essencekit">Reddit</a>, or <a href="https://github.com/essencekit/essencekit">GitHub</a>.</p>
+
+</main>
+
+<script type="module">
+    import { enableCopyOnCodeBlocks } from "@ASSETS@/utils/copy.js";
+    enableCopyOnCodeBlocks();
+</script>
+
+<script type="module">
+    (() => {
+        const sideNav = document.getElementById('sideNav');
+        const docsLink = sideNav?.querySelector('a[href="/docs"]');
+        const headings = document.querySelectorAll('main h2[id]');
+
+        if (!sideNav || !docsLink || !headings.length) return;
+
+        /* Build a fragment with the new sub‑links */
+        const frag = document.createDocumentFragment();
+        headings.forEach((h2) => {
+            const a = document.createElement('a');
+            a.className = 'sub-link'; // styling hook
+            a.href = `#${h2.id}`;
+            a.textContent = h2.textContent;
+            frag.appendChild(a);
+        });
+
+        docsLink.after(frag);
+    })();
+</script>
+
