@@ -3,7 +3,8 @@ node_modules/
 package-lock.json
 
 # Build output
-Pub/
+src/Pub/*
+!src/Pub/_redirects
 
 # env
 .env
