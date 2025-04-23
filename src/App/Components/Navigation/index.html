@@ -66,7 +66,9 @@
         font: 700 1.5rem/48px monospace;
         padding: 0;
         cursor: pointer;
-        display: none; /* show via media‑query */
+        display: flex;
+        align-items: center;
+        justify-content: center;
         z-index: 1001;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
     }
@@ -85,10 +87,6 @@
     .overlay.show {
         opacity: 1;
         visibility: visible;
-    }
-
-    .hamburger {
-        display: block;
     }
 
     .side-nav {
