@@ -1,4 +1,5 @@
 /       /dev/index     200
 /docs   /dev/docs      200
 /bless  /dev/bless     200
+/mudra  /dev/mudra     200
 /*      /dev/:splat    200

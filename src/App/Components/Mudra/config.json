@@ -1,0 +1,6 @@
+{
+    "extends": "BasePage",
+    "title": "mudra ∞",
+    "description": "essencekit is a minimalist web framework focused on speed, simplicity, and fun.",
+    "render": true
+}
